@@ -8,7 +8,7 @@ export default function Setup() {
     const [players, setPlayers] = useState<Player[]>([]);
     const [player, setPlayer] = useState("");
     const [sweepStarted, setSweepStarted] = useState(false);
-    const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
     const [sweepFinished, setSweepFinished] = useState(false);
     const [teamsToPick, setTeamsToPick] = useState(["Canada", "Mexico", "United States", "Australia", "Iraq", "Iran", "Japan", "Jordan", "South Korea", "Qatar", "Saudi Arabia", "Uzbekistan", "Algeria", "Cape Verde", "DR Congo", "Ivory Coast", "Egypt", "Ghana", "Morocco", "Senegal", "South Africa", "Tunisia", "Curacao", "Haiti", "Panama", "Argentina", "Brazil", "Colombia", "Ecuador", "Paraguay", "Uruguay", "New Zealand", "Austria", "Belgium", "Bosnia and Herzegovina", "Croatia", "Czechia", "England", "France", "Germany", "Netherlands", "Norway", "Portugal", "Scotland", "Spain", "Sweden", "Switzerland", "Turkey"
     ]);
@@ -16,6 +16,10 @@ export default function Setup() {
     const [error, setError] = useState("");
 
     const teamAdder = () => {
+        if (!selectedPlayer || !currentPlayer) {
+            setError("Please select a player first");
+            return;
+        }
         if (currentPlayer.teams.length < maxTeams) {
             setError("");
             const index = Math.floor(Math.random() * teamsToPick.length);
@@ -72,16 +76,16 @@ export default function Setup() {
             ) : (
                 !sweepFinished ? (
                     <div style={{display: "flex", gap: "450px"}}>
-                        <div align="left">
+                        <div style={{textAlign:"left"}}>
                             {teamsToPick.map(team => (
                                 <ul key={team}>{team}</ul>
                             ))}
                         </div>
 
-                        <div align="right">
+                        <div style={{textAlign:"right"}}>
 
                             {selectedPlayer ? (
-                                <h3 align="left">Selected player: {selectedPlayer.name}</h3>
+                                <h3 style={{textAlign:"left"}}>Selected player: {selectedPlayer.name}</h3>
                             ) : (
                                 <h3>Please select a player</h3>
                             )}
@@ -100,7 +104,7 @@ export default function Setup() {
                                 ))}
                             </p>
 
-                            <h4 align="left">Teams</h4>
+                            <h4 style={{textAlign:"left"}}>Teams</h4>
 
                             <div>
                                 <button onClick={teamAdder}>Add team</button>
