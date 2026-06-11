@@ -4,6 +4,8 @@
 
 ---
 
+## Live demo - https://sweepstake-ashen.vercel.app/
+
 ## 🚀 Key Features
 
 * **Three-Phase State Workflow:** Utilizes robust conditional rendering to guide users through a multi-step user experience: Registration, Random Draft Allocation and Final Results Display.
