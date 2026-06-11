@@ -1,73 +1,29 @@
-# React + TypeScript + Vite
+# 🏆 World Cup 2026 Sweepstake Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A type-safe React application built using TypeScript to dynamically manage World Cup teams and sweepstake pools between players evenly.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Key Features
 
-## React Compiler
+* **Three-Phase State Workflow:** Utilizes robust conditional rendering to guide users through a multi-step user experience: Registration, Random Draft Allocation and Final Results Display.
+* **Algorithmic Asset Allocation:** Automatically calculates the fair maximum number of teams per person on the fly based on the player pool size (`Math.floor(48 / players.length)`).
+* **Immutable State Updates:** Leverages advanced array manipulation (`.map()`, `.filter()`, and spread operators) to smoothly update React state without mutating raw data.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack & Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **Framework:** React 18
+* **Language:** TypeScript (Strict type interfaces for tracking `Player` schemas)
+* **State Management:** Functional React Hooks (`useState`)
+* **Styling:** Dynamic inline layouts (Flexbox configuration)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🧠 Technical Challenges & Key Learnings
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 1. Complex Multistate Synchronization & State Immutability
+**Challenge:** During the draft phase, assigning a random team to a specific player requires updating three independent pieces of data at once: pushing a country into a player's private list, removing that specific country from the master list of 48 nations, and ensuring no arrays are accidentally mutated directly.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Solution:** Designed a unified `teamAdder` handler that handles the draft workflow smoothly. By utilizing the functional update pattern with `.map()` and the spread operator (`...`), the application seamlessly identifies the selected player, appends their new team, and cleanses the global array using `.filter()` to keep the state architecture strictly predictable and bug-free.
